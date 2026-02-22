@@ -13,5 +13,5 @@ Flight plan: 50000ft cruise, descent to 25000ft at a constant speed
 
 Measurements derived from NASA Facts Helios Prototype, Helios MIB
 
-The Helios aircraft used the S6078 airfoil, but it's polars and dimensions were not easily found, so the SD6080, which is similar in performance. 
+The Helios aircraft used the S6078 airfoil, but it's polars and dimensions were not easily found, so the SD6080 was used, which is similar in performance. 
 Used airfoiltool.com for polar generation
