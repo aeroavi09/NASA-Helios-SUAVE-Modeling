@@ -1,25 +1,5 @@
 # nasa_helios.py 
-# ----------------------------------------------------------------------
 #   Imports
-# ----------------------------------------------------------------------
-import os
-import sys
-import subprocess
-
-#set path to the folder of where i have open vsp SET TO YOUR OWN PATH
-vsp_main = r'C:\VSP39'
-vsp_engine = r'C:\VSP39\python\openvsp\openvsp'
-if os.path.exists(vsp_main):
-    os.add_dll_directory(vsp_main)
-    if vsp_engine not in sys.path:
-        sys.path.insert(0, vsp_engine)
-try:
-    import _vsp as vsp
-    vsp.VSPRenew()
-    print("Vsp works")
-
-except Exception as e:
-    print(f"VSP Error: {e}")
 
 # General Python Imports
 import numpy as np
@@ -76,8 +56,8 @@ def main():
 
 def vehicle_setup():
     
-    vehicle                                     = SUAVE.Vehicle() #repeatable
-    vehicle.tag                                 = plane_name #repeatable
+    vehicle                                     = SUAVE.Vehicle() 
+    vehicle.tag                                 = plane_name 
     
     #this is the fuel and mass stuff
     vehicle.mass_properties.max_takeoff         = 2048 * Units.pounds
@@ -96,20 +76,18 @@ def vehicle_setup():
     vehicle.envelope.maximum_dynamic_pressure = 0.5*1.225*(12.07**2.) #Max q
     
     
-    #------------------------
     # main wing 
-    #------------------------
     
-    wing                                        = SUAVE.Components.Wings.Main_Wing() #repeatable
-    wing.tag                                    = 'main_wing' #repeatable
+    wing                                        = SUAVE.Components.Wings.Main_Wing() 
+    wing.tag                                    = 'main_wing' 
     wing.sweeps.quarter_chord                   = 0.0 * Units.deg
     wing.thickness_to_chord                     = 0.15
     wing.areas.reference                        = 1976 * Units.feet**2
     wing.spans.projected                        = 247 * Units.feet
     wing.chords.root                            = 8 * Units.feet
     wing.chords.tip                             = 8 * Units.feet
-    wing.taper                                  = wing.chords.tip/wing.chords.root #repeatable, try not to
-    wing.aspect_ratio                           = wing.spans.projected **2 / wing.areas.reference #repeatable
+    wing.taper                                  = wing.chords.tip/wing.chords.root 
+    wing.aspect_ratio                           = wing.spans.projected **2 / wing.areas.reference 
     wing.twists.root                            = 0.0 * Units.degrees
     wing.twists.tip                             = 5.0 * Units.degrees
     wing.areas.wetted                           = 2.0 * wing.areas.reference
@@ -125,8 +103,8 @@ def vehicle_setup():
     # wing segments ------------
     
     #root
-    segment                                     = SUAVE.Components.Wings.Segment()#repeatable
-    segment.tag                                 = 'root' #repeatable
+    segment                                     = SUAVE.Components.Wings.Segment()
+    segment.tag                                 = 'root' 
     segment.percent_span_location               = 0.0
     segment.twist                               = 0.0 * Units.deg
     segment.root_chord_percent                  = 1.0
@@ -136,11 +114,11 @@ def vehicle_setup():
     airfoil = SUAVE.Components.Airfoils.Airfoil()
     airfoil.coordinate_file = './Airfoils/sd6080.txt'
     segment.append_airfoil(airfoil)
-    wing.append_segment(segment) #repeatable
+    wing.append_segment(segment) 
     
     #break
-    segment                                     = SUAVE.Components.Wings.Segment()#repeatable
-    segment.tag                                 = 'break' #repeatable
+    segment                                     = SUAVE.Components.Wings.Segment()
+    segment.tag                                 = 'break' 
     segment.percent_span_location               = 0.652
     segment.twist                               = 0.0 * Units.deg
     segment.root_chord_percent                  = 1
@@ -150,11 +128,11 @@ def vehicle_setup():
     airfoil = SUAVE.Components.Airfoils.Airfoil()
     airfoil.coordinate_file = './Airfoils/sd6080.txt'
     segment.append_airfoil(airfoil)
-    wing.append_segment(segment) #repeatable
+    wing.append_segment(segment) 
         
     #tip
-    segment                                     = SUAVE.Components.Wings.Segment()#repeatable
-    segment.tag                                 = 'tip' #repeatable
+    segment                                     = SUAVE.Components.Wings.Segment()
+    segment.tag                                 = 'tip' 
     segment.percent_span_location               = 1.0
     segment.twist                               = 5.0 * Units.deg
     segment.root_chord_percent                  = 1
@@ -164,7 +142,7 @@ def vehicle_setup():
     airfoil = SUAVE.Components.Airfoils.Airfoil()
     airfoil.coordinate_file = './Airfoils/sd6080.txt'
     segment.append_airfoil(airfoil)
-    wing.append_segment(segment) #repeatable
+    wing.append_segment(segment) 
     
     
     wing                                        = segment_properties(wing)
@@ -172,20 +150,17 @@ def vehicle_setup():
     
     vehicle.append_component(wing)
     
-    #------------------------
-    # vertical stabilizer pylon
-    #------------------------
-    
-    wing                                        = SUAVE.Components.Wings.Vertical_Tail() #repeatable
-    wing.tag                                    = 'vertical_stabilizer_1' #repeatable
+    # vertical stabilizer pylon 
+    wing                                        = SUAVE.Components.Wings.Vertical_Tail() 
+    wing.tag                                    = 'vertical_stabilizer_1' 
     wing.sweeps.quarter_chord                   = 44.427 * Units.deg
     wing.thickness_to_chord                     = 0.16662
     wing.areas.reference                        = 37.837 * Units.feet**2
     wing.spans.projected                        = 4.698 * Units.feet
     wing.chords.root                            = 8.0538 * Units.feet
     wing.chords.tip                             = 8.0538 * Units.feet
-    wing.taper                                  = wing.chords.tip/wing.chords.root #repeatable, try not to
-    wing.aspect_ratio                           = wing.spans.projected **2 / wing.areas.reference #repeatable
+    wing.taper                                  = wing.chords.tip/wing.chords.root 
+    wing.aspect_ratio                           = wing.spans.projected **2 / wing.areas.reference 
     wing.twists.root                            = 0.0 * Units.degrees
     wing.twists.tip                             = 0.0 * Units.degrees
     wing.areas.wetted                           = 2.0 * wing.areas.reference
@@ -203,20 +178,18 @@ def vehicle_setup():
     
     vehicle.append_component(wing)
     
-    #------------------------
     # vertical stabilizer pylon 2
-    #------------------------
     
-    wing                                        = SUAVE.Components.Wings.Vertical_Tail() #repeatable
-    wing.tag                                    = 'vertical_stabilizer_2' #repeatable
+    wing                                        = SUAVE.Components.Wings.Vertical_Tail() 
+    wing.tag                                    = 'vertical_stabilizer_2' 
     wing.sweeps.quarter_chord                   = 44.427 * Units.deg
     wing.thickness_to_chord                     = 0.16662
     wing.areas.reference                        = 2*37.837 * Units.feet**2 #because its symmetric
     wing.spans.projected                        = 2*4.698 * Units.feet #because its symmetric
     wing.chords.root                            = 8.0538 * Units.feet
     wing.chords.tip                             = 8.0538 * Units.feet
-    wing.taper                                  = wing.chords.tip/wing.chords.root #repeatable, try not to
-    wing.aspect_ratio                           = wing.spans.projected **2 / wing.areas.reference #repeatable
+    wing.taper                                  = wing.chords.tip/wing.chords.root 
+    wing.aspect_ratio                           = wing.spans.projected **2 / wing.areas.reference 
     wing.twists.root                            = 0.0 * Units.degrees
     wing.twists.tip                             = 0.0 * Units.degrees
     wing.origin                                 = [[-4.698 * Units.feet, 40.269 * Units.feet, -4.698 * Units.feet]] #x,y,z
@@ -230,20 +203,18 @@ def vehicle_setup():
     
     vehicle.append_component(wing)
     
-    #------------------------
     # vertical stabilizer pylon 3
-    #------------------------
     
-    wing                                        = SUAVE.Components.Wings.Vertical_Tail() #repeatable
-    wing.tag                                    = 'vertical_stabilizer_3' #repeatable
+    wing                                        = SUAVE.Components.Wings.Vertical_Tail() 
+    wing.tag                                    = 'vertical_stabilizer_3' 
     wing.sweeps.quarter_chord                   = 44.427 * Units.deg
     wing.thickness_to_chord                     = 0.16662
     wing.areas.reference                        = 2*37.837 * Units.feet**2 #because its symmetric
     wing.spans.projected                        = 2*4.698 * Units.feet #because its symmetric
     wing.chords.root                            = 8.0538 * Units.feet
     wing.chords.tip                             = 8.0538 * Units.feet
-    wing.taper                                  = wing.chords.tip/wing.chords.root #repeatable, try not to
-    wing.aspect_ratio                           = wing.spans.projected **2 / wing.areas.reference #repeatable
+    wing.taper                                  = wing.chords.tip/wing.chords.root 
+    wing.aspect_ratio                           = wing.spans.projected **2 / wing.areas.reference 
     wing.twists.root                            = 0.0 * Units.degrees
     wing.twists.tip                             = 0.0 * Units.degrees
     wing.origin                                 = [[-4.698 * Units.feet, (2*40.269) * Units.feet, -4.698 * Units.feet]] #x,y,z
@@ -257,18 +228,16 @@ def vehicle_setup():
     
     vehicle.append_component(wing)
     
-    #-----------------
     # build network
-    #-----------------
     
     net = Solar()
-    net.number_of_engines = 14
+    net.number_of_engines                       = 14
     
-    # Component 1 the Sun
+    #  the Sun
     sun = SUAVE.Components.Energy.Processes.Solar_Radiation()
     net.solar_flux = sun
         
-    # Component 2 the solar panels
+    # the solar panels
     panel = SUAVE.Components.Energy.Converters.Solar_Panel()
     panel.area                                  = 2000 *Units.feet**2
     panel.efficiency                            = 0.19
@@ -276,7 +245,7 @@ def vehicle_setup():
     
     # Component 3 the ESC
     esc = SUAVE.Components.Energy.Distributors.Electronic_Speed_Controller()
-    esc.efficiency                              = 0.95 # Gundlach for brushless motors
+    esc.efficiency                              = 0.95 
     net.esc                                     = esc
     
     # Component 5 the Propeller
@@ -301,23 +270,23 @@ def vehicle_setup():
     
         # design ONCE before the loop
     prop_template = SUAVE.Components.Energy.Converters.Propeller()
-    prop_template.number_of_blades      = 2.0
-    prop_template.freestream_velocity   = 75.9968 * Units['m/s']
-    prop_template.angular_velocity      = 700 * Units['rpm']
-    prop_template.tip_radius            = (79/2) * Units.inches
-    prop_template.hub_radius            = 4 * Units.inches
-    prop_template.design_Cl             = 0.7
-    prop_template.design_altitude       = 70000 * Units.feet
-    prop_template.design_power          = 1500 * Units.watts
-    prop_template.design_thrust         = None
-    prop_template.airfoil_geometry      = ['./Airfoils/sd6080.txt']
-    prop_template.airfoil_polars        = [[     
-            './Airfoils/Polars/xf-sd6080-il-50000.txt',
-            './Airfoils/Polars/xf-sd6080-il-100000.txt',
-            './Airfoils/Polars/xf-sd6080-il-200000.txt',
-            './Airfoils/Polars/xf-sd6080-il-500000.txt',
-            './Airfoils/Polars/xf-sd6080-il-1000000.txt' ]]
-    prop_template.airfoil_polar_stations = [0] * 20
+    prop_template.number_of_blades              = 2.0
+    prop_template.freestream_velocity           = 75.9968 * Units['m/s']
+    prop_template.angular_velocity              = 700 * Units['rpm']
+    prop_template.tip_radius                    = (79/2) * Units.inches
+    prop_template.hub_radius                    = 4 * Units.inches
+    prop_template.design_Cl                     = 0.7
+    prop_template.design_altitude               = 70000 * Units.feet
+    prop_template.design_power                  = 1500 * Units.watts
+    prop_template.design_thrust                 = None
+    prop_template.airfoil_geometry              = ['./Airfoils/sd6080.txt']
+    prop_template.airfoil_polars                = [[     
+                        './Airfoils/Polars/xf-sd6080-il-50000.txt',
+                        './Airfoils/Polars/xf-sd6080-il-100000.txt',
+                        './Airfoils/Polars/xf-sd6080-il-200000.txt',
+                        './Airfoils/Polars/xf-sd6080-il-500000.txt',
+                        './Airfoils/Polars/xf-sd6080-il-1000000.txt' ]]
+    prop_template.airfoil_polar_stations        = [0] * 20
     
     print("Designing propeller...")
     prop_template = propeller_design(prop_template)
@@ -331,42 +300,42 @@ def vehicle_setup():
         net.propellers.append(prop)
     
         motor = SUAVE.Components.Energy.Converters.Motor()
-        motor.tag              = f'motor_{i+1}'
-        motor.resistance       = 0.006
-        motor.no_load_current  = 2.5  * Units.ampere
-        motor.speed_constant   = 700  * Units['rpm']
-        motor.propeller_radius = prop_template.tip_radius
-        motor.propeller_Cp     = prop_template.design_power_coefficient
-        motor.gear_ratio       = 12.
-        motor.gearbox_efficiency = .98
-        motor.expected_current = 60.
+        motor.tag                           = f'motor_{i+1}'
+        motor.resistance                    = 0.006
+        motor.no_load_current               = 2.5  * Units.ampere
+        motor.speed_constant                = 700  * Units['rpm']
+        motor.propeller_radius              = prop_template.tip_radius
+        motor.propeller_Cp                  = prop_template.design_power_coefficient
+        motor.gear_ratio                    = 12.
+        motor.gearbox_efficiency            = .98
+        motor.expected_current              = 60.
         net.motors.append(motor)
         
     #everything past here is NOT within the for loop! if it is it will have an infinite loop of death
     # Component 6 the Payload
     payload = SUAVE.Components.Energy.Peripherals.Payload()
-    payload.power_draw           = 100. * Units.watts 
-    payload.mass_properties.mass = 726 * Units.pounds
-    net.payload                  = payload
+    payload.power_draw                      = 100. * Units.watts 
+    payload.mass_properties.mass            = 726 * Units.pounds
+    net.payload                             = payload
     
     # Component 7 the Avionics
     avionics = SUAVE.Components.Energy.Peripherals.Avionics()
-    avionics.power_draw = 50. * Units.watts
-    net.avionics        = avionics      
+    avionics.power_draw                     = 50. * Units.watts
+    net.avionics                            = avionics      
 
     # Component 8 the Battery
     bat = SUAVE.Components.Energy.Storages.Batteries.Constant_Mass.Lithium_Ion()
-    bat.mass_properties.mass = 95.0 * Units.kg
-    bat.specific_energy      = 800. * Units.Wh/Units.kg
-    bat.max_voltage          = 130.0
+    bat.mass_properties.mass                = 95.0 * Units.kg
+    bat.specific_energy                     = 800. * Units.Wh/Units.kg
+    bat.max_voltage                         = 130.0
     initialize_from_mass(bat)
-    net.battery              = bat
+    net.battery= bat
    
     #Component 9 the system logic controller and MPPT
     logic = SUAVE.Components.Energy.Distributors.Solar_Logic()
-    logic.system_voltage  = 120.0
-    logic.MPPT_efficiency = 0.95
-    net.solar_logic       = logic
+    logic.system_voltage                    = 120.0
+    logic.MPPT_efficiency                   = 0.95
+    net.solar_logic= logic
     
     # add the solar network to the vehicle
     vehicle.append_component(net)  
@@ -375,20 +344,14 @@ def vehicle_setup():
 
 def configs_setup(vehicle):
     
-    # ------------------------------------------------------------------
     #   Initialize Configurations
-    # ------------------------------------------------------------------
-    
     configs = SUAVE.Components.Configs.Config.Container()
     
     base_config = SUAVE.Components.Configs.Config(vehicle)
     base_config.tag = 'base'
     configs.append(base_config)
     
-    # ------------------------------------------------------------------
     #   Cruise Configuration
-    # ------------------------------------------------------------------
-    
     config = SUAVE.Components.Configs.Config(base_config)
     config.tag = 'cruise'
     
@@ -409,18 +372,14 @@ def analyses_setup(configs):
 
 def base_analysis(vehicle):
 
-    # ------------------------------------------------------------------
-    #   Initialize the Analyses
-    # ------------------------------------------------------------------     
+    #   Initialize the Analyses    
     analyses = SUAVE.Analyses.Vehicle()
     
-    # ------------------------------------------------------------------
     #  Basic Geometry Relations
     sizing = SUAVE.Analyses.Sizing.Sizing()
     sizing.features.vehicle = vehicle
     analyses.append(sizing)
     
-    # ------------------------------------------------------------------
     #  Weights
     weights = SUAVE.Analyses.Weights.Weights_UAV()
     weights.settings.empty = \
@@ -428,7 +387,6 @@ def base_analysis(vehicle):
     weights.vehicle = vehicle
     analyses.append(weights)
     
-    # ------------------------------------------------------------------
     #  Aerodynamics Analysis
     
     # Calculate extra drag from landing gear:
@@ -447,18 +405,15 @@ def base_analysis(vehicle):
     aerodynamics.settings.drag_coefficient_increment =  1.0*drag_area/vehicle.reference_area
     analyses.append(aerodynamics)
     
-    # ------------------------------------------------------------------
     #  Energy
     energy = SUAVE.Analyses.Energy.Energy()
     energy.network = vehicle.networks #what is called throughout the mission (at every time step))
     analyses.append(energy)
     
-    # ------------------------------------------------------------------
     #  Planet Analysis
     planet = SUAVE.Analyses.Planets.Planet()
     analyses.append(planet)
     
-    # ------------------------------------------------------------------
     #  Atmosphere Analysis
     atmosphere = SUAVE.Analyses.Atmospheric.US_Standard_1976()
     atmosphere.features.planet = planet.features
@@ -469,10 +424,7 @@ def base_analysis(vehicle):
 
 def mission_setup(analyses,vehicle):
     
-    # ------------------------------------------------------------------
     #   Initialize the Mission
-    # ------------------------------------------------------------------
-
     mission = SUAVE.Analyses.Mission.Sequential_Segments()
     mission.tag = 'mission'
 
@@ -485,10 +437,8 @@ def mission_setup(analyses,vehicle):
     # base segment
     base_segment = Segments.Segment()   
     base_segment.process.iterate.initials.initialize_battery = SUAVE.Methods.Missions.Segments.Common.Energy.initialize_battery
-    
-    # ------------------------------------------------------------------    
-    #   Cruise Segment: constant speed, constant altitude
-    # ------------------------------------------------------------------    
+     
+    #   Cruise constant speed, constant altitude  
     
     segment = SUAVE.Analyses.Mission.Segments.Cruise.Constant_Mach_Constant_Altitude(base_segment)
     segment.tag = "cruise"
@@ -499,21 +449,19 @@ def mission_setup(analyses,vehicle):
     # segment attributes     
     segment.state.numerics.number_control_points = 64
     segment.start_time = time.strptime("12:00:00 Jun 21, 2025", "%H:%M:%S %b %d, %Y")
-    segment.altitude       = 50000  * Units.feet 
-    segment.air_speed      = 75.9968 * Units['m/s']
-    segment.distance       = 300 * Units.miles
-    segment.battery_energy = vehicle.networks.solar.battery.max_energy*1.0 #Charge the battery to start
-    segment.latitude       = 41.8832   # this defaults to degrees (do not use Units.degrees)
-    segment.longitude      = 87.6324 # this defaults to degrees
+    segment.altitude                    = 50000  * Units.feet 
+    segment.air_speed                   = 75.9968 * Units['m/s']
+    segment.distance                    = 300 * Units.miles
+    segment.battery_energy              = vehicle.networks.solar.battery.max_energy*1.0 #Charge the battery to start
+    segment.latitude                    = 41.8832   # this defaults to degrees (do not use Units.degrees)
+    segment.longitude                   = 87.6324 # this defaults to degrees
     
     segment = vehicle.networks.solar.add_unknowns_and_residuals_to_segment(segment,initial_power_coefficient = 0.05)   
     
     mission.append_segment(segment)    
     
-    
-    # ------------------------------------------------------------------    
-    #   Cruise Segment 2, a descent at constant speed
-    # ------------------------------------------------------------------    
+      
+    #   Cruise Segment 2, a descent at constant speed  
 
     segment = Segments.Descent.Constant_Speed_Constant_Rate(base_segment)
     segment.tag = "descend"
@@ -535,10 +483,8 @@ def mission_setup(analyses,vehicle):
 
     # add to mission
     mission.append_segment(segment)
-
-    # ------------------------------------------------------------------    
+   
     #   Mission definition complete    
-    # ------------------------------------------------------------------
     
     return mission
 
@@ -547,9 +493,7 @@ def missions_setup(base_mission):
     # the mission container
     missions = SUAVE.Analyses.Mission.Mission.Container()
     
-    # ------------------------------------------------------------------
     #   Base Mission
-    # ------------------------------------------------------------------
     
     missions.base = base_mission
     
